@@ -14,7 +14,5 @@ class CreateCompatibilityRules < ActiveRecord::Migration[8.0]
     add_index :compatibility_rules, [:product_id, :condition_part_id, :condition_choice_id], 
               name: 'index_compatibility_rules_on_condition'
     add_index :compatibility_rules, [:product_id, :action]
-    add_index :compatibility_rules, :condition_part_id
-    add_index :compatibility_rules, :target_part_id
   end
 end

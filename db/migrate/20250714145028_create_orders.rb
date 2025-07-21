@@ -13,7 +13,7 @@ class CreateOrders < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :orders, :user_id
+    # add_index :orders, :user_id
     add_index :orders, :status
     add_index :orders, :created_at
     add_index :orders, [:status, :created_at]

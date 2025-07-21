@@ -1,19 +1,5 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-#   
-# db/seeds.rb
-
 # Clear existing data in dependency order
 puts "Clearing existing data..."
-OrderItem.destroy_all
-Order.destroy_all
 CartItem.destroy_all
 Cart.destroy_all
 PricingRule.destroy_all
@@ -22,7 +8,7 @@ ProductPart.destroy_all
 PartChoice.destroy_all
 Part.destroy_all
 Product.destroy_all
-User.destroy_all
+# User.destroy_all
 
 puts "Creating users..."
 # Create admin user (Marcus)
@@ -51,16 +37,6 @@ jane = User.create!(
   last_name: 'Smith',
   role: 'customer',
   phone: '+1-555-0125',
-  active: true
-)
-
-# Create another admin for testing
-admin2 = User.create!(
-  email: 'sarah@bikeshop.com',
-  first_name: 'Sarah',
-  last_name: 'Wilson',
-  role: 'admin',
-  phone: '+1-555-0126',
   active: true
 )
 
@@ -369,7 +345,7 @@ PricingRule.create!(
   description: 'Premium carbon fiber finish with professional components'
 )
 
-puts "Creating sample carts and orders..."
+puts "Creating sample carts..."
 
 # Create cart for John with mountain bike configuration
 john_cart = john.cart
@@ -386,36 +362,6 @@ CartItem.create!(
   product: bicycle,
   quantity: 1,
   selections: mountain_config
-)
-
-# Create a completed order for Jane
-road_config = {
-  frame_part.id.to_s => frame_diamond.id,
-  finish_part.id.to_s => finish_shiny.id,
-  wheels_part.id.to_s => wheels_road.id,
-  rim_part.id.to_s => rim_silver.id,
-  chain_part.id.to_s => chain_8speed.id
-}
-
-jane_order = Order.create!(
-  user: jane,
-  status: 'delivered',
-  total_amount: bicycle.calculate_price(road_config.transform_keys(&:to_i).transform_values(&:to_i)),
-  shipping_address: '123 Main St, Springfield, IL 62701',
-  billing_address: '123 Main St, Springfield, IL 62701',
-  customer_email: jane.email,
-  customer_name: jane.full_name,
-  customer_phone: jane.phone
-)
-
-OrderItem.create!(
-  order: jane_order,
-  product: bicycle,
-  quantity: 1,
-  unit_price: jane_order.total_amount,
-  product_name: bicycle.name,
-  product_description: bicycle.description,
-  selections: road_config
 )
 
 # Create a guest cart (no user)
@@ -436,28 +382,6 @@ CartItem.create!(
   selections: basic_config
 )
 
-# Create a guest order
-guest_order = Order.create!(
-  user: nil, # Guest order
-  status: 'pending',
-  total_amount: 1200.00,
-  shipping_address: '456 Oak Ave, Portland, OR 97201',
-  billing_address: '456 Oak Ave, Portland, OR 97201',
-  customer_email: 'guest@example.com',
-  customer_name: 'Guest Customer',
-  customer_phone: '+1-555-0199'
-)
-
-OrderItem.create!(
-  order: guest_order,
-  product: bicycle,
-  quantity: 1,
-  unit_price: 600.00,
-  product_name: bicycle.name,
-  product_description: bicycle.description,
-  selections: mountain_config
-)
-
 puts "Seed data created successfully!"
 puts ""
 puts "=" * 60
@@ -466,7 +390,6 @@ puts "=" * 60
 puts ""
 puts "👥 USERS CREATED:"
 puts "  • #{marcus.full_name} (#{marcus.email}) - #{marcus.role.capitalize}"
-puts "  • #{admin2.full_name} (#{admin2.email}) - #{admin2.role.capitalize}" 
 puts "  • #{john.full_name} (#{john.email}) - #{john.role.capitalize}"
 puts "  • #{jane.full_name} (#{jane.email}) - #{jane.role.capitalize}"
 puts ""
@@ -487,19 +410,14 @@ puts ""
 puts "🛒 SAMPLE DATA:"
 puts "  • #{Cart.count} carts (#{Cart.joins(:user).count} user carts, #{Cart.where(user: nil).count} guest carts)"
 puts "  • #{CartItem.count} items in carts"
-puts "  • #{Order.count} orders (#{Order.where.not(user: nil).count} user orders, #{Order.where(user: nil).count} guest orders)"
-puts "  • #{OrderItem.count} items in orders"
 puts ""
 puts "💰 EXAMPLE PRICING:"
 mountain_price = bicycle.calculate_price(mountain_config.transform_keys(&:to_i).transform_values(&:to_i))
-road_price = bicycle.calculate_price(road_config.transform_keys(&:to_i).transform_values(&:to_i))
 basic_price = bicycle.calculate_price(basic_config.transform_keys(&:to_i).transform_values(&:to_i))
 
 puts "  1. Mountain Config: €#{mountain_price}"
 puts "     (Full-suspension + Matte + Mountain wheels + Blue rim + 8-speed)"
-puts "  2. Road Config: €#{road_price}" 
-puts "     (Diamond + Shiny + Road wheels + Silver rim + 8-speed)"
-puts "  3. Basic Config: €#{basic_price}"
+puts "  2. Basic Config: €#{basic_price}"
 puts "     (Step-through + Shiny + Road wheels + Black rim + 8-speed)"
 puts ""
 puts "🎯 NEXT STEPS:"

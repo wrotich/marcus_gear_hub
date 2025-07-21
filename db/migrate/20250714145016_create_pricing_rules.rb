@@ -9,8 +9,6 @@ class CreatePricingRules < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :pricing_rules, :product_id
-    add_index :pricing_rules, :part_choice_id
     add_index :pricing_rules, [:product_id, :price_adjustment]
   end
 end
