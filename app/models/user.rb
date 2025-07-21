@@ -9,11 +9,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { minimum: 2, maximum: 50 }
   validates :role, presence: true
 
-  enum role: {
-    customer: "customer",       # Regular shoppers
-    admin: "admin",             # Marcus and staff
-    super_admin: "super_admin"  # Full system access
-  }
+  enum :role, { customer: "customer", admin: "admin", super_admin: "super_admin" }
 
   scope :active, -> { where(active: true) }
   scope :customers, -> { where(role: "customer") }
