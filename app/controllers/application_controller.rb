@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::API
-  protect_from_forgery with: :null_session, if: -> { request.format.json? }
-
   before_action :current_cart
 
   private
@@ -10,17 +8,6 @@ class ApplicationController < ActionController::API
   end
 
   def current_cart
-    @current_cart ||= if current_user
-      current_user.cart || current_user.create_cart
-    else
-      session_id = session[:session_id] ||= SecureRandom.hex(16)
-      Cart.find_or_create_by(session_id: session_id)
-    end
+    @current_cart ||= Cart.first || Cart.create!
   end
-
-  def require_admin
-    redirect_to root_path unless current_user&.admin?
-  end
-
-  helper_method :current_user, :current_cart
 end

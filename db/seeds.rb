@@ -48,7 +48,7 @@ bicycle = Product.create!(
   base_price: 500.00,
   category: "bicycle",
   active: true,
-  image_url: "https://example.com/images/mountain-bike.jpg"
+  image_url: "https://www.pexels.com/photo/black-and-white-hardtail-bike-on-brown-road-between-trees-100582/"
 )
 
 # Future products for expansion
@@ -57,8 +57,7 @@ road_bike = Product.create!(
   description: "Lightweight and fast road bike perfect for racing and long rides.",
   base_price: 450.00,
   category: "bicycle",
-  active: true,
-  image_url: "https://example.com/images/road-bike.jpg"
+  active: true
 )
 
 # Ski product (for future expansion)
@@ -68,7 +67,6 @@ skis = Product.create!(
   base_price: 800.00,
   category: "ski",
   active: false, # Not yet available
-  image_url: "https://example.com/images/alpine-skis.jpg"
 )
 
 puts "Creating parts for mountain bike..."
@@ -303,8 +301,8 @@ puts "Creating pricing rules..."
 PricingRule.create!(
   product: bicycle,
   conditions: [
-    { 'part_id' => frame_part.id, 'choice_id' => frame_full_suspension.id },
-    { 'part_id' => finish_part.id, 'choice_id' => finish_matte.id }
+    { 'part_id' => frame_part.id, 'part_name': frame_part.name, 'choice_id' => frame_full_suspension.id, 'choice_name' => frame_full_suspension.name },
+    { 'part_id' => finish_part.id, 'part_name': finish_part.name, 'choice_id' => finish_matte.id, 'choice_name' => finish_matte.name }
   ],
   price_adjustment: 15.00,
   description: 'Matte finish costs extra on full-suspension frame due to larger surface area'
@@ -314,9 +312,9 @@ PricingRule.create!(
 PricingRule.create!(
   product: bicycle,
   conditions: [
-    { 'part_id' => frame_part.id, 'choice_id' => frame_diamond.id },
-    { 'part_id' => wheels_part.id, 'choice_id' => wheels_road.id },
-    { 'part_id' => chain_part.id, 'choice_id' => chain_single.id }
+    { 'part_id' => frame_part.id, 'part_name' => frame_part.name, 'choice_id' => frame_diamond.id, 'choice_name' => frame_diamond.name },
+    { 'part_id' => wheels_part.id, 'part_name' => wheels_part.name, 'choice_id' => wheels_road.id, 'choice_name' => wheels_road.name },
+    { 'part_id' => chain_part.id, 'part_name' => chain_part.name, 'choice_id' => chain_single.id, 'choice_name' => chain_single.name }
   ],
   price_adjustment: -25.00,
   description: 'Discount for basic road bike configuration'
@@ -326,9 +324,24 @@ PricingRule.create!(
 PricingRule.create!(
   product: bicycle,
   conditions: [
-    { 'part_id' => frame_part.id, 'choice_id' => frame_full_suspension.id },
-    { 'part_id' => wheels_part.id, 'choice_id' => wheels_mountain.id },
-    { 'part_id' => chain_part.id, 'choice_id' => chain_21speed.id }
+    {
+      'part_id' => frame_part.id,
+      'part_name' => frame_part.name,
+      'choice_id' => frame_full_suspension.id,
+      'choice_name' => frame_full_suspension.name
+    },
+    {
+      'part_id' => wheels_part.id,
+      'part_name' => wheels_part.name,
+      'choice_id' => wheels_mountain.id,
+      'choice_name' => wheels_mountain.name
+    },
+    {
+      'part_id' => chain_part.id,
+      'part_name' => chain_part.name,
+      'choice_id' => chain_21speed.id,
+      'choice_name' => chain_21speed.name
+    }
   ],
   price_adjustment: -50.00,
   description: 'Premium mountain bike package discount'
@@ -338,8 +351,8 @@ PricingRule.create!(
 PricingRule.create!(
   product: bicycle,
   conditions: [
-    { 'part_id' => finish_part.id, 'choice_id' => finish_carbon.id },
-    { 'part_id' => chain_part.id, 'choice_id' => chain_21speed.id }
+    { 'part_id' => finish_part.id, 'part_name' => finish_part.name, 'choice_id' => finish_carbon.id, 'choice_name' => finish_carbon.name },
+    { 'part_id' => chain_part.id, 'part_name' => chain_part.name, 'choice_id' => chain_21speed.id, 'choice_name' => chain_21speed.name }
   ],
   price_adjustment: 25.00,
   description: 'Premium carbon fiber finish with professional components'

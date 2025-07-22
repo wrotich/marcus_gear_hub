@@ -52,9 +52,11 @@ class Api::V1::ProductsController < ApplicationController
   # POST /api/v1/products/:id/available_options
   def available_options
     current_selections = params[:selections] || {}
-    current_selections = current_selections.transform_keys(&:to_i).transform_values(&:to_i)
 
+    # Keep selections as strings for available_options (since we fixed the model)
     available = @product.available_options(current_selections)
+
+    # Convert to integers for calculate_price
     total_price = @product.calculate_price(current_selections)
 
     render json: {
@@ -75,6 +77,6 @@ class Api::V1::ProductsController < ApplicationController
   private
 
   def set_product
-    @product = Product.active.find(params[:id])
+    @product = Product.active.find(params[:id].to_s)
   end
 end

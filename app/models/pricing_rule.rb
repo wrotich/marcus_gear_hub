@@ -2,7 +2,7 @@ class PricingRule < ApplicationRecord
   belongs_to :product
   belongs_to :part_choice, optional: true
 
-  validates :conditions, presence: true # JSON field storing selection conditions
+  validates :conditions, presence: true
   validates :price_adjustment, presence: true, numericality: true
 
   # Check if this pricing rule applies to given selections

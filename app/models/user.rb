@@ -118,7 +118,6 @@ class User < ApplicationRecord
     )
   end
 
-  # Statistics methods (for admin dashboard)
   def self.total_customers
     customers.active.count
   end
