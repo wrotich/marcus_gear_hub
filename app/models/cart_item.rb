@@ -17,7 +17,7 @@ class CartItem < ApplicationRecord
 
     summary = {}
     selections.each do |part_id, choice_id|
-      part = Part.find_by(id: part_id)
+      part = Part.find_by(id: part_id.to_i)
       choice = PartChoice.find_by(id: choice_id)
       summary[part.name] = choice.name if part && choice
     end
@@ -27,6 +27,7 @@ class CartItem < ApplicationRecord
   private
 
   def calculate_unit_price
-    self.unit_price = product.calculate_price(selections)
+    selections_with_int_keys = selections.transform_keys(&:to_i)
+    self.unit_price = product.calculate_price(selections_with_int_keys)
   end
 end

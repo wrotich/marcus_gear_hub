@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -18,15 +19,6 @@ Rails.application.routes.draw do
       end
       resources :cart_items, only: [ :index, :create, :update, :destroy ]
     end
-  end
-
-  # Admin Panel Routes
-  namespace :admin do
-    resources :products
-    resources :parts do
-      resources :part_choices, except: [ :show, :index ]
-    end
-    root "products#index"
   end
 
   # Root - can be a simple API info page or redirect

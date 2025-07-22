@@ -5,9 +5,9 @@ class Order < ApplicationRecord
   validates :status, presence: true
   validates :total_amount, presence: true, numericality: { greater_than: 0 }
 
-  enum status: {
+  enum :status, {
     pending: "pending",
-    confirmed: "confirmed",
+    confirmed: "confirmed", 
     processing: "processing",
     shipped: "shipped",
     delivered: "delivered",

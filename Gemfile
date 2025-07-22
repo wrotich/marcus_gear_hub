@@ -54,4 +54,16 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers"
+  gem "pry"
+
+  # Admin interface gems
+  gem "rails_admin", "~> 3.3"
+  gem "image_processing", "~> 1.2"  # For image uploads
+  gem "sassc-rails"  # For SCSS
+  gem "bootstrap", "~> 5.3"  # For styling
+
+
+  gem "sprockets-rails", "~> 3.5"
 end
+gem "sassc-rails"
+gem "sassc-rails"

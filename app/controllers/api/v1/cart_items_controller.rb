@@ -1,7 +1,6 @@
 class Api::V1::CartItemsController < ApplicationController
   before_action :set_cart_item, only: [ :update, :destroy ]
 
-  # GET /api/v1/cart_items
   def index
     render json: {
       cart: {
@@ -21,15 +20,13 @@ class Api::V1::CartItemsController < ApplicationController
     }
   end
 
-  # POST /api/v1/cart_items
   def create
-    @product = Product.find(params[:product_id])
+    @product = Product.find(params[:product_id].to_i)
     selections = params[:selections] || {}
 
-    # Validate required parts are selected
     required_parts = @product.product_parts.where(required: true).includes(:part)
     missing_parts = required_parts.reject do |product_part|
-      selections[product_part.part.id.to_s].present? || selections[product_part.part.id].present?
+      selections[product_part.part.id.to_s].present?
     end
 
     if missing_parts.any?
@@ -38,11 +35,8 @@ class Api::V1::CartItemsController < ApplicationController
       }, status: :unprocessable_entity
     end
 
-    # Check for existing item with same configuration
-    existing_item = current_cart.cart_items.find_by(
-      product: @product,
-      selections: selections
-    )
+    existing_items = current_cart.cart_items.where(product: @product)
+    existing_item = existing_items.find { |item| item.selections == selections }
 
     if existing_item
       existing_item.update!(quantity: existing_item.quantity + 1)
@@ -70,7 +64,6 @@ class Api::V1::CartItemsController < ApplicationController
     }
   end
 
-  # PATCH /api/v1/cart_items/:id
   def update
     if @cart_item.update(quantity: params[:quantity])
       render json: {
@@ -87,7 +80,6 @@ class Api::V1::CartItemsController < ApplicationController
     end
   end
 
-  # DELETE /api/v1/cart_items/:id
   def destroy
     @cart_item.destroy!
     render json: {

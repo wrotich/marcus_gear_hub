@@ -3,5 +3,5 @@ class ProductPart < ApplicationRecord
   belongs_to :part
 
   validates :product_id, uniqueness: { scope: :part_id }
-  validates :required, inclusion: { in: [true, false] }
+  validates :required, inclusion: { in: [ true, false ] }
 end
