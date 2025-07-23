@@ -2,6 +2,32 @@
 
 A customizable bicycle e-commerce platform with Rails API backend, Next.js frontend, and RailsAdmin for business management.
 
+----
+## Getting Started
+```bash
+# Prerequisites
+# PostgreSQL installed and running
+# Ruby 3.4.2+
+# Node.js 18+
+# Git
+
+# Backend setup
+git clone https://github.com/wrotich/marcus_gear_hub
+cd marcus_gear_hub 
+bundle install
+rails db:setup && rails db:seed
+rails server -p 3001
+
+# Frontend setup  
+cd marcus_gear_hub/frontend
+npm install && npm run dev
+
+# Access points
+# Customer: http://localhost:3000
+# Admin: http://localhost:3001/admin
+```
+---
+
 ## Architecture Overview
 
 **Tech Stack**: Rails API + Next.js + RailsAdmin + PostgreSQL  
@@ -185,31 +211,4 @@ Real-time computation combines base price, part costs, and applicable rules.
 - **Tradeoff**: More API calls, CPU overhead
 - **Alternative**: Cache prices with smart invalidation
 - **PostgreSQL Advantage**: Fast materialized views for price caching
-
----
-
-## Getting Started
-
-```bash
-# Prerequisites
-# PostgreSQL installed and running
-# Ruby 3.4.2+
-# Node.js 18+
-# Git
-
-# Backend setup
-git clone https://github.com/wrotich/marcus_gear_hub
-cd marcus_gear_hub 
-bundle install
-rails db:setup && rails db:seed
-rails server -p 3001
-
-# Frontend setup  
-cd marcus_gear_hub/frontend
-npm install && npm run dev
-
-# Access points
-# Customer: http://localhost:3000
-# Admin: http://localhost:3001/admin
-```
 ---

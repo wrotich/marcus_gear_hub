@@ -64,6 +64,6 @@ group :development, :test do
 
 
   gem "sprockets-rails", "~> 3.5"
+
+  gem "jsonapi-serializer"
 end
-gem "sassc-rails"
-gem "sassc-rails"
