@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import ProductConfigurator from '../components/ProductConfigurator';
+import ProductConfigurator from '../../components/ProductConfigurator';
 import Link from 'next/link';
 
 export default function ProductPage() {

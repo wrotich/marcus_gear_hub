@@ -7,7 +7,7 @@ class Order < ApplicationRecord
 
   enum :status, {
     pending: "pending",
-    confirmed: "confirmed", 
+    confirmed: "confirmed",
     processing: "processing",
     shipped: "shipped",
     delivered: "delivered",
