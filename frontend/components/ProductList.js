@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,11 +9,8 @@ const ProductList = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  useEffect(() => {
-    fetchProducts();
-  }, [selectedCategory]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
     try {
       const url = selectedCategory 
         ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?category=${selectedCategory}`
@@ -48,7 +45,11 @@ const ProductList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [selectedCategory, fetchProducts]);
 
   if (loading) {
     return (
@@ -94,18 +95,6 @@ const ProductList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-gray-900">Marcus Sports Shop</h1>
-      
-      {/* Debug Info */}
-      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm">
-        <strong>Debug Info:</strong> Found {products.length} products
-        {products.length === 0 && (
-          <span className="text-red-600 ml-2">
-            (Try running `rails db:seed` in your Rails app)
-          </span>
-        )}
-      </div>
-      
-      {/* Category Filter */}
       <div className="mb-6">
         <button
           onClick={() => setSelectedCategory('')}
@@ -133,7 +122,6 @@ const ProductList = () => {
         </button>
       </div>
 
-      {/* Products Grid */}
       {products.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map(product => (

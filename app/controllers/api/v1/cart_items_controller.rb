@@ -2,21 +2,10 @@ class Api::V1::CartItemsController < ApplicationController
   before_action :set_cart_item, only: [ :update, :destroy ]
 
   def index
+    serialized_cart = Api::V1::CartSerializer.new(current_cart).serializable_hash
+
     render json: {
-      cart: {
-        items: current_cart.cart_items.includes(:product).map do |item|
-          {
-            id: item.id,
-            product_name: item.product.name,
-            configuration: item.configuration_summary,
-            quantity: item.quantity,
-            unit_price: item.unit_price.to_f,
-            total_price: item.total_price.to_f
-          }
-        end,
-        total_price: current_cart.total_price.to_f,
-        item_count: current_cart.item_count
-      }
+      cart: serialized_cart[:data][:attributes]
     }
   end
 
@@ -49,16 +38,11 @@ class Api::V1::CartItemsController < ApplicationController
       )
     end
 
+    serialized_cart_item = Api::V1::CartItemSerializer.new(@cart_item).serializable_hash
+
     render json: {
       success: true,
-      cart_item: {
-        id: @cart_item.id,
-        product_name: @cart_item.product.name,
-        configuration: @cart_item.configuration_summary,
-        quantity: @cart_item.quantity,
-        unit_price: @cart_item.unit_price.to_f,
-        total_price: @cart_item.total_price.to_f
-      },
+      cart_item: serialized_cart_item[:data][:attributes].merge(id: @cart_item.id),
       cart_total: current_cart.total_price.to_f,
       cart_count: current_cart.item_count
     }
